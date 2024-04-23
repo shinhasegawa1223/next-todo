@@ -1,7 +1,49 @@
-const EditTaskForm = () => {
+"use client";
+
+import { FormState, updateTask } from "@/actions/task";
+import { TaskDocument } from "@/models/task";
+import { useState } from "react";
+import { useFormState, useFormStatus } from "react-dom";
+
+interface EditTaskFormProps {
+  task: TaskDocument;
+}
+
+// FC
+//const EditTaskForm: React.FC<EditTaskFormProps> = ({ task }) => {
+
+//JSX.Element
+
+const EditTaskForm = ({ task }: EditTaskFormProps) => {
+  //各フィールドのステート定義
+  const [title, setTitle] = useState(task.title);
+  const [description, setDescription] = useState(task.description);
+  const [dueDate, setDueData] = useState(task.dueDate);
+  const [isCompleted, setIsCompleted] = useState(task.isCompleted);
+
+  const updateTaskWithId = updateTask.bind(null, task._id);
+  const initialState: FormState = { error: "" };
+  const [state, formAction] = useFormState(updateTaskWithId, initialState);
+
+  const SubmitButton = () => {
+    const { pending } = useFormStatus();
+    console.log("結果");
+    console.log(isCompleted);
+
+    return (
+      <button
+        type="submit"
+        disabled={pending}
+        className="mt-8 py-2 w-full rounded-md text-white bg-gray-800
+         hover:bg-gray-700 text-sm font-semibold  shadow-sm disabled:bg-gray-400"
+      >
+        Edit
+      </button>
+    );
+  };
   return (
     <div className="mt-10 mx-auto w-full max-w-sm">
-      <form>
+      <form action={formAction}>
         <div>
           <label htmlFor="title" className="block text-sm font-medium ">
             Title
@@ -10,6 +52,8 @@ const EditTaskForm = () => {
             type="text"
             id="title"
             name="title"
+            value={title}
+            onChange={(e) => setTitle(e.target.value)}
             required
             className="block mt-2 py-1.5 px-2 w-full rounded-md  border-0
               shadow-sm ring-1 ring-inset ring-gray-300"
@@ -23,6 +67,8 @@ const EditTaskForm = () => {
             type="text"
             id="description"
             name="description"
+            value={description}
+            onChange={(e) => setDescription(e.target.value)}
             required
             className="block mt-2 py-1.5 px-2 w-full rounded-md  border-0
               shadow-sm ring-1 ring-inset ring-gray-300"
@@ -38,6 +84,8 @@ const EditTaskForm = () => {
             name="dueDate"
             min="2020-01-01"
             max="2999-12-31"
+            value={dueDate}
+            onChange={(e) => setDueData(e.target.value)}
             required
             className="block mt-2 py-1.5 px-2 w-full rounded-md  border-0
               shadow-sm ring-1 ring-inset ring-gray-300"
@@ -48,21 +96,19 @@ const EditTaskForm = () => {
           <input
             type="checkbox"
             id="isCompleted"
-            name="isCompleted "
+            name="isCompleted"
             className="mr-2 w-4 h-4"
+            checked={isCompleted}
+            onChange={(e) => setIsCompleted(e.target.checked)}
           />
           <label htmlFor="isCompleted" className="text-sm ">
             Task Comp
           </label>
         </div>
-
-        <button
-          type="submit"
-          className="mt-8 py-2 w-full rounded-md text-white bg-gray-800
-               hover:bg-gray-700 text-sm font-semibold  shadow-sm "
-        >
-          Edit
-        </button>
+        <SubmitButton />
+        {state.error !== "" && (
+          <p className="met-2 text-red-500 text-sm">{state.error}</p>
+        )}
       </form>
     </div>
   );
