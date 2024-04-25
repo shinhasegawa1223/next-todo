@@ -12,6 +12,7 @@ const TaskDeleteButton: React.FC<TaskDeleteButtonProps> = ({ id }) => {
   const deleteTaskWithId = deleteTask.bind(null, id);
   const initialState: FormState = { error: "" };
   const [state, formAction] = useFormState(deleteTaskWithId, initialState);
+  console.log("delete");
 
   useEffect(() => {
     if (state && state.error !== "") {

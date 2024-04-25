@@ -27,6 +27,12 @@ const NavList = () => {
       link: "/expired",
       icon: <FaRegClock className="size-5" />,
     },
+    {
+      id: 4,
+      label: "sample Tasks",
+      link: "/sample",
+      icon: <FaRegClock className="size-5" />,
+    },
   ];
   return (
     <div className="mt-24">
