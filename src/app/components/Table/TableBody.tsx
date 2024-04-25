@@ -29,9 +29,12 @@ const data = [
 const TableBody = ({
   onUserSelect,
 }: {
+  // ユーザーが選択した項目のインデックスを処理する関数
   onUserSelect: (selectedIndex: number) => void;
 }) => {
+  // チェックボックスの変更を処理する関数
   const handleCheckboxChange = (index: number) => {
+    // ユーザーがチェックボックスを変更したとき、選択されたユーザーのインデックスをTableコンポーネントに伝達する
     onUserSelect(index); // チェックボックスの変更をTableコンポーネントに伝達する
   };
 
