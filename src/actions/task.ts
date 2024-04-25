@@ -19,10 +19,9 @@ export const createTask = async (state: FormState, formData: FormData) => {
 
   try {
     //DBと接続してデータを登録する
-    console.log("db con");
 
     await connectDb();
-    console.log("task create");
+
     await TaskModel.create(newTask);
   } catch (error) {
     state.error = "Task can not create";
@@ -47,17 +46,23 @@ export const updateTask = async (
 
   try {
     //DBと接続してデータを登録する
-    console.log("db con");
-    console.log("update--------------");
-    console.log("db con");
-    console.log("update--------------");
-    console.log(formData.get("isCompleted"));
 
     await connectDb();
-    console.log("task create");
     await TaskModel.updateOne({ _id: id }, updateTask);
   } catch (error) {
     state.error = "can not update";
+    return state;
+  }
+  // try catchの外で実施すること
+  redirect("/");
+};
+
+export const deleteTask = async (id: string, state: FormState) => {
+  try {
+    await connectDb();
+    await TaskModel.deleteOne({ _id: id });
+  } catch (error) {
+    state.error = "can not delete";
     return state;
   }
   // try catchの外で実施すること
